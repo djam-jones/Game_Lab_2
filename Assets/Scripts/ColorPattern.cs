@@ -11,7 +11,8 @@ public class ColorPattern : MonoBehaviour {
 
 	public Color[] 		colors;//	= new Color[_red, _green, _blue, _yellow];
 
-	public int[]		_pastCollection;
+	private List<int> _pastCollection = new List<int>();
+	//public int[]		_pastCollection;
 
 	private int 		_roundIndex;
 	private int			_currentRound;
@@ -19,13 +20,15 @@ public class ColorPattern : MonoBehaviour {
 	private float		_invokeTime = 1f;
 	private float 		_repeatRate = 0.8f;
 
+	private int 		_checker;
+
 	public Light localLight;
 
 	void Awake()
 	{
 		if(_roundIndex == 0)
 		{
-			_roundIndex = 900;
+			_roundIndex = 1;
 		}
 
 		localLight = GetComponent<Light>();
@@ -40,14 +43,35 @@ public class ColorPattern : MonoBehaviour {
 			CancelInvoke("ChangeColor");
 			return;
 		}
+
 		int nextColor = Random.Range(0,4);
 
-		_pastCollection[_currentRound] = nextColor;
+		_pastCollection.Add(nextColor);
+
+		Debug.Log(_pastCollection.Count);
 
 		localLight.color = colors[nextColor];
 		Invoke("turnLightOff", 0.5f);
 
 		_currentRound++;
+	}
+
+	public void ButtonPressed(int inputButton)
+	{
+		if(inputButton == _pastCollection[_checker])
+		{
+			_checker ++;
+			Debug.Log("correct");
+
+			if(_checker == _pastCollection.Count)
+			{
+				_roundIndex ++;
+				InvokeRepeating("ChangeColor", _invokeTime, _repeatRate);
+			}
+			return;
+		}
+
+		Debug.Log("Wrong button");
 	}
 
 	void turnLightOff()
