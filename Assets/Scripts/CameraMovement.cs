@@ -3,13 +3,13 @@ using System.Collections;
 
 public class CameraMovement : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-	
+	private float _rotateSpeed = 120f;
+
+	void Update()
+	{
+		float _x = Input.GetAxis("P1_V_R_Joystick") * _rotateSpeed * Time.deltaTime;
+
+		transform.Rotate(new Vector3( -_x, 0, 0 ));
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+
 }
