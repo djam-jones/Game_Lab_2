@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class ColorPattern : MonoBehaviour {
 
-	public Color[] 		colors;//	= new Color[_red, _green, _blue, _yellow];
+	public Color[] 		colors;
 
 	private List<int> _pastCollection = new List<int>();
 
@@ -22,7 +22,6 @@ public class ColorPattern : MonoBehaviour {
 
 	void Awake()
 	{
-		//als de round index 0 is word deze 1, maakt het mogelijk de eerste ronde altijd uit te voeren.
 		if(_roundIndex == 0)
 		{
 			_roundIndex = 1;
@@ -31,13 +30,11 @@ public class ColorPattern : MonoBehaviour {
 		localLight = GetComponent<Light>();
 		turnLightOff();
 
-		//start de loop functie voor de game.
 		InvokeRepeating("ChangeColor", _invokeTime, _repeatRate);
 	}
 
 	void ChangeColor()
 	{
-		//stopt als hij het totaal aantal ronden heeft gehaald.
 		if(_currentRound == _roundIndex)
 		{
 			CancelInvoke("ChangeColor");
@@ -66,6 +63,9 @@ public class ColorPattern : MonoBehaviour {
 	{
 		if(inputButton == _pastCollection[_checker])
 		{
+			localLight.color = colors[_pastCollection[_checker]];
+			Invoke("turnLightOff", 0.5f);
+
 			_checker++;
 
 			if(_checker == _pastCollection.Count)
@@ -75,8 +75,11 @@ public class ColorPattern : MonoBehaviour {
 			}
 			return;
 		}
-
 		Debug.Log("Wrong button");
+		localLight.color = Color.black;
+		_roundIndex = 1;
+		_pastCollection.Clear();
+		InvokeRepeating("ChangeColor", _invokeTime, _repeatRate);
 	}
 
 	void turnLightOff()
