@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using XInputDotNetPure;
 
 public class ControllerVibration : MonoBehaviour {
 
@@ -29,7 +30,7 @@ public class ControllerVibration : MonoBehaviour {
 	
 	private void shake()
 	{
-		Handheld.Vibrate();
+		GamePad.SetVibration(0,1,1);
 		_shakes -= 1;
 		if(_shakes == 0)
 			CancelInvoke("shake");
